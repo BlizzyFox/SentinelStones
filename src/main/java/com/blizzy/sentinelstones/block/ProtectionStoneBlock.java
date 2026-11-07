@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.PushReaction;
 
 public class ProtectionStoneBlock extends Block {
 
@@ -27,6 +28,12 @@ public class ProtectionStoneBlock extends Block {
         this.registerDefaultState(
             this.stateDefinition.any().setValue(BOUND, false)
         );
+    }
+
+    // Prevent sentinel stones from being pushed by sticky pistons
+    @Override
+    public PushReaction getPistonPushReaction(BlockState state) {
+        return PushReaction.BLOCK;
     }
 
     @Override

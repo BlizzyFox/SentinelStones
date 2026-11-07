@@ -56,7 +56,7 @@ public class SentinelStones {
             BLOCKS.registerBlock(
                 "sentinel_stone",
                 ProtectionStoneBlock::new,
-                BlockBehaviour.Properties.of().strength(3.0F, 6.0F)
+                BlockBehaviour.Properties.of().explosionResistance(0.0f).destroyTime(2.0f)
             );
     
     public static final DeferredItem<BlockItem> SENTINEL_STONE_ITEM =
