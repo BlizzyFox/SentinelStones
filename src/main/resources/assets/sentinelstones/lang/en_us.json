@@ -9,5 +9,8 @@
   "sentinelstones.configuration.items": "Item List",
   "sentinelstones.configuration.logDirtBlock": "Log Dirt Block",
   "sentinelstones.configuration.magicNumberIntroduction": "Magic Number Text",
-  "sentinelstones.configuration.magicNumber": "Magic Number"
+  "sentinelstones.configuration.magicNumber": "Magic Number",
+
+  "block.sentinelstones.sentinel_stone": "Sentinel Stone"
+
 }

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sentinelstones:block/sentinel_stone"
+    }
+  }
+}

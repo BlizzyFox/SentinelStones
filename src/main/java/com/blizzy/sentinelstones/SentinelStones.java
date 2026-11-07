@@ -45,10 +45,23 @@ public class SentinelStones {
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "sentinelstones" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
+    /* */
     // Creates a new Block with the id "sentinelstones:example_block", combining the namespace and path
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
     // Creates a new BlockItem with the id "sentinelstones:example_block", combining the namespace and path
     public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+    // Sentinel Stone
+    public static final DeferredBlock<Block> SENTINEL_STONE =
+            BLOCKS.registerBlock(
+                "sentinel_stone",
+                Block::new,
+                BlockBehaviour.Properties.of().strength(3.0F, 6.0F)
+            );
+    
+    public static final DeferredItem<BlockItem> SENTINEL_STONE_ITEM =
+            ITEMS.registerSimpleBlockItem(
+                "sentinel_stone", SENTINEL_STONE
+            );
 
     // Creates a new food item with the id "sentinelstones:example_id", nutrition 1 and saturation 2
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
@@ -61,6 +74,7 @@ public class SentinelStones {
             .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(EXAMPLE_ITEM.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(SENTINEL_STONE.get());
             }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
@@ -112,6 +126,6 @@ public class SentinelStones {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Sentinel Stones loaded.");
     }
 }
