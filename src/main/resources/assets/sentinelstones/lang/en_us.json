@@ -1,0 +1,13 @@
+{
+  "itemGroup.sentinelstones": "Example Mod Tab",
+  "block.sentinelstones.example_block": "Example Block",
+  "item.sentinelstones.example_item": "Example Item",
+
+  "sentinelstones.configuration.title": "SentinelStones Configs",
+  "sentinelstones.configuration.section.sentinelstones.common.toml": "SentinelStones Configs",
+  "sentinelstones.configuration.section.sentinelstones.common.toml.title": "SentinelStones Configs",
+  "sentinelstones.configuration.items": "Item List",
+  "sentinelstones.configuration.logDirtBlock": "Log Dirt Block",
+  "sentinelstones.configuration.magicNumberIntroduction": "Magic Number Text",
+  "sentinelstones.configuration.magicNumber": "Magic Number"
+}
