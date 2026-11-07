@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "bound=false": {
       "model": "sentinelstones:block/sentinel_stone"
+    },
+    "bound=true": {
+      "model": "sentinelstones:block/sentinel_stone_bound"
     }
   }
 }

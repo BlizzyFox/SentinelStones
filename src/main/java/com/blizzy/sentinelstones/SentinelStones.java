@@ -2,6 +2,7 @@ package com.blizzy.sentinelstones;
 
 import org.slf4j.Logger;
 
+import com.blizzy.sentinelstones.block.ProtectionStoneBlock;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -54,7 +55,7 @@ public class SentinelStones {
     public static final DeferredBlock<Block> SENTINEL_STONE =
             BLOCKS.registerBlock(
                 "sentinel_stone",
-                Block::new,
+                ProtectionStoneBlock::new,
                 BlockBehaviour.Properties.of().strength(3.0F, 6.0F)
             );
     
