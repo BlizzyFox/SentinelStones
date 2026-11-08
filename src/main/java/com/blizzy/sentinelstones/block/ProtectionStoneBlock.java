@@ -1,21 +1,25 @@
 
 package com.blizzy.sentinelstones.block;
 
+import java.util.List;
+
+import com.blizzy.sentinelstones.SentinelStones;
 import com.blizzy.sentinelstones.protection.ProtectionSavedData;
 import com.blizzy.sentinelstones.protection.ProtectionStoneHandler;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class ProtectionStoneBlock extends Block {
 
@@ -43,6 +47,14 @@ public class ProtectionStoneBlock extends Block {
         builder.add(BOUND);
     }
 
+    @Override
+    public List<ItemStack> getDrops(
+            BlockState state,
+            net.minecraft.world.level.storage.loot.LootParams.Builder builder
+    ) {
+        return List.of(new ItemStack(SentinelStones.SENTINEL_STONE.get()));
+    }
+
     /**
      * Handle right-clicking the Protection Stone.
      */
@@ -68,19 +80,16 @@ public class ProtectionStoneBlock extends Block {
      * Remove ownership when the physical block is destroyed.
      */
     @Override
-    protected void onRemove(
+    public void onRemove(
             BlockState state,
             Level level,
             BlockPos pos,
             BlockState newState,
             boolean isMoving
     ) {
-
-        if (!state.is(newState.getBlock())
+        if (!state.is(newState.getBlock()) && !level.isClientSide
                 && level instanceof ServerLevel serverLevel) {
-
-            ProtectionSavedData.get(serverLevel)
-                    .removeClaim(serverLevel, pos);
+            ProtectionSavedData.get(serverLevel).removeClaim(serverLevel, pos);
         }
 
         super.onRemove(state, level, pos, newState, isMoving);

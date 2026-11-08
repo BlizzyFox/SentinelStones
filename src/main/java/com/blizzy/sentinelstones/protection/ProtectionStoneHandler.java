@@ -48,12 +48,12 @@ public class ProtectionStoneHandler {
                 );
 
                 player.displayClientMessage(
-                        Component.literal("Protection Stone unbound."),
+                        Component.literal("Sentinel Stone unbound."),
                         true
                 );
             } else {
                 player.displayClientMessage(
-                        Component.literal("This Protection Stone belongs to another player!"),
+                        Component.literal("This Sentinel Stone belongs to another player!"),
                         true
                 );
             }
@@ -69,7 +69,7 @@ public class ProtectionStoneHandler {
 
             player.displayClientMessage(
                     Component.literal(
-                            "This Protection Stone overlaps another player's protection!"
+                            "This Sentinel Stone overlaps another player's protection!"
                     ),
                     true
             );
@@ -106,7 +106,7 @@ public class ProtectionStoneHandler {
 
         player.displayClientMessage(
                 Component.literal(
-                        "Protection Stone successfully bound!"
+                        "Sentinel Stone successfully bound!"
                 ),
                 true
         );

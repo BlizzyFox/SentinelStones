@@ -56,7 +56,7 @@ public class SentinelStones {
             BLOCKS.registerBlock(
                 "sentinel_stone",
                 ProtectionStoneBlock::new,
-                BlockBehaviour.Properties.of().explosionResistance(0.0f).destroyTime(2.0f)
+                BlockBehaviour.Properties.of().explosionResistance(0.0f).destroyTime(1.0f)
             );
     
     public static final DeferredItem<BlockItem> SENTINEL_STONE_ITEM =
@@ -72,9 +72,9 @@ public class SentinelStones {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.sentinelstones")) //The language key for the title of your CreativeModeTab
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .icon(() -> SENTINEL_STONE_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
+                //output.accept(EXAMPLE_ITEM.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
                 output.accept(SENTINEL_STONE.get());
             }).build());
 
