@@ -3,6 +3,9 @@ package com.blizzy.sentinelstones;
 import org.slf4j.Logger;
 
 import com.blizzy.sentinelstones.block.ProtectionStoneBlock;
+import com.blizzy.sentinelstones.commands.SentinelStonesCommands;
+import com.blizzy.sentinelstones.protection.BeaconEffectHandler;
+import com.blizzy.sentinelstones.protection.BeaconProtectionEvents;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,7 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -98,9 +100,18 @@ public class SentinelStones {
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
+        // Add Commands.
+        //modEventBus.addListener(SentinelStonesCommands::registerCommands);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        NeoForge.EVENT_BUS.addListener(SentinelStonesCommands::registerCommands);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockBreak);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockPlace);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockInteract);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onExplosionDetonate);
+        NeoForge.EVENT_BUS.addListener(BeaconEffectHandler::onPlayerTick);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -114,6 +125,7 @@ public class SentinelStones {
         LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        
     }
 
     // Add the example block item to the building blocks tab
@@ -129,4 +141,5 @@ public class SentinelStones {
         // Do something when the server starts
         LOGGER.info("Sentinel Stones loaded.");
     }
+
 }

@@ -161,14 +161,14 @@ public class BeaconProtectionManager {
 
             for (GlobalPos existingBeacon : settlement.getBeacons()) {
 
-                // Different dimensions cannot overlap.
-                if (!existingBeacon.dimension().equals(level.dimension())) {
-                    continue;
-                }
+                if (!existingBeacon.dimension().equals(level.dimension())) continue;
 
                 BlockPos existingPos = existingBeacon.pos();
 
-                // Ignore distant beacons before calculating their tier.
+                // Ignore destroyed or invalid beacons.
+                int existingTier = getBeaconTier(level, existingPos);
+                if (existingTier == 0) continue;
+
                 if (Math.abs(existingPos.getX() - proposedPos.getX()) > 100
                         || Math.abs(existingPos.getZ() - proposedPos.getZ()) > 100) {
                     continue;
@@ -207,6 +207,7 @@ public class BeaconProtectionManager {
                 }
 
                 BlockPos beaconPos = beacon.pos();
+                if (getBeaconTier(level, beaconPos) == 0) continue;
 
                 if (Math.abs(beaconPos.getX() - x) > 50
                         || Math.abs(beaconPos.getZ() - z) > 50) {
@@ -237,5 +238,52 @@ public class BeaconProtectionManager {
                 getSettlementAtLocation(level, pos);
 
         return settlement != null && settlement.isMember(player);
+    }
+
+    public static int getMiningFatigueAmplifierAtLocation(
+            ServerLevel level, BlockPos targetPos, UUID playerId) {
+
+        double x = targetPos.getX() + 0.5;
+        double y = targetPos.getY() + 0.5;
+        double z = targetPos.getZ() + 0.5;
+
+        int highestTier = 0;
+
+        ProtectionSavedData data = ProtectionSavedData.get(level);
+
+        for (BeaconSettlement settlement : data.getSettlements()) {
+
+            // Members are exempt from their settlement's Mining Fatigue.
+            if (settlement.isMember(playerId)) {
+                continue;
+            }
+
+            for (GlobalPos beacon : settlement.getBeacons()) {
+
+                if (!beacon.dimension().equals(level.dimension())) {
+                    continue;
+                }
+
+                BlockPos beaconPos = beacon.pos();
+
+                if (Math.abs(beaconPos.getX() - x) > 50
+                        || Math.abs(beaconPos.getZ() - z) > 50) {
+                    continue;
+                }
+
+                int tier = getBeaconTier(level, beaconPos);
+
+                if (tier == 0) continue;
+
+                AABB area = getProtectionArea(level, beaconPos);
+
+                if (area.contains(x, y, z)) {
+                    highestTier = Math.max(highestTier, tier);
+                }
+            }
+        }
+
+        // Minecraft effect amplifiers start at zero.
+        return highestTier - 1;
     }
 }
