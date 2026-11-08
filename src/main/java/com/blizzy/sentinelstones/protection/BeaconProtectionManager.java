@@ -1,4 +1,3 @@
-
 package com.blizzy.sentinelstones.protection;
 
 import java.util.UUID;
@@ -9,8 +8,28 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 
 public class BeaconProtectionManager {
+
+    /**
+     * A beacon is active only when it has a valid pyramid
+     * and an unobstructed beam.
+     */
+    public static boolean isBeaconActive(ServerLevel level, BlockPos pos) {
+        // Must have at least a tier 1 pyramid.
+        if (getBeaconTier(level, pos) == 0) {
+            return false;
+        }
+
+        // Must have a beacon block entity.
+        if (!(level.getBlockEntity(pos) instanceof BeaconBlockEntity beacon)) {
+            return false;
+        }
+
+        // Must have an unobstructed beam.
+        return !beacon.getBeamSections().isEmpty();
+    }
 
     /**
      * Get the pyramid tier of a beacon.
@@ -202,11 +221,25 @@ public class BeaconProtectionManager {
 
             for (GlobalPos beacon : settlement.getBeacons()) {
 
-                if (!beacon.dimension().equals(level.dimension())) {
+                BlockPos beaconPos = beacon.pos();
+
+                // No protection at all unless the beacon is active.
+                if (!isBeaconActive(level, beaconPos)) {
                     continue;
                 }
 
-                BlockPos beaconPos = beacon.pos();
+                // The local 3x3x3 protection cube.
+                boolean insideLocalCube =
+                        Math.abs(targetPos.getX() - beaconPos.getX()) <= 1 &&
+                        Math.abs(targetPos.getY() - beaconPos.getY()) <= 1 &&
+                        Math.abs(targetPos.getZ() - beaconPos.getZ()) <= 1;
+
+                if (insideLocalCube) {
+                    return settlement;
+                }
+
+                // Continue with the existing larger settlement protection
+                // range calculation.
                 if (getBeaconTier(level, beaconPos) == 0) continue;
 
                 if (Math.abs(beaconPos.getX() - x) > 50
@@ -223,6 +256,47 @@ public class BeaconProtectionManager {
         }
 
         return null;
+    }
+
+    /**
+     * Checks whether a position is inside the 3x3x3 area
+     * immediately surrounding a bound beacon.
+     *
+     * This is independent of beacon pyramid tier.
+     * The settlement's larger protection area still requires tier 1.
+     */
+    public static boolean isCreateProtected(
+            ServerLevel level,
+            BlockPos targetPos
+    ) {
+        ProtectionSavedData data = ProtectionSavedData.get(level);
+
+        for (BeaconSettlement settlement : data.getSettlements()) {
+            for (GlobalPos beacon : settlement.getBeacons()) {
+
+                BlockPos beaconPos = beacon.pos();
+
+                // No protection at all unless the beacon is active.
+                if (!isBeaconActive(level, beaconPos)) {
+                    continue;
+                }
+
+                if (!beacon.dimension().equals(level.dimension())) {
+                    continue;
+                }
+
+                boolean inside =
+                        Math.abs(targetPos.getX() - beaconPos.getX()) <= 1 &&
+                        Math.abs(targetPos.getY() - beaconPos.getY()) <= 1 &&
+                        Math.abs(targetPos.getZ() - beaconPos.getZ()) <= 1;
+
+                if (inside) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

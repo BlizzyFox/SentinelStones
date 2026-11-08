@@ -33,6 +33,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.fml.ModList;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(SentinelStones.MODID)
@@ -125,7 +126,24 @@ public class SentinelStones {
         LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
-        
+        if (ModList.get().isLoaded("create")) {
+            event.enqueueWork(() -> {
+                try {
+                    Class<?> compatibility = Class.forName(
+                            "com.blizzy.sentinelstones.compat.create.CreateCompatibility"
+                    );
+
+                    compatibility.getMethod("register").invoke(null);
+
+                    LOGGER.info("Create compatibility enabled.");
+                } catch (ReflectiveOperationException exception) {
+                    throw new RuntimeException(
+                            "Failed to initialize Create compatibility.",
+                            exception
+                    );
+                }
+            });
+        }
     }
 
     // Add the example block item to the building blocks tab

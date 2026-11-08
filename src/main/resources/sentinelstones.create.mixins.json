@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.blizzy.sentinelstones.mixin.create",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BlockBreakingKineticBlockEntityMixin",
+    "BlockBreakingMovementBehaviourMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -23,4 +23,15 @@ public class ProtectionManager {
         // Only the owner can modify this area.
         return owner.equals(playerId);
     }
+
+    /**
+     * Whether Create is allowed to modify this position.
+     * Sentinel Stone claims are protected regardless of owner.
+     */
+    public static boolean isCreateProtected(
+            ServerLevel level,
+            BlockPos pos
+    ) {
+        return ProtectionSavedData.get(level).getOwnerAt(level, pos) != null;
+    }
 }

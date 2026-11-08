@@ -1,6 +1,7 @@
 
 package com.blizzy.sentinelstones.protection;
 
+import com.blizzy.sentinelstones.SentinelStones;
 import com.blizzy.sentinelstones.protection.BeaconProtectionManager;
 
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
+import java.util.UUID;
 
 public class BeaconProtectionEvents {
 
@@ -25,6 +27,9 @@ public class BeaconProtectionEvents {
             true
         );
     }
+    private static UUID getSentinelOwner(ServerLevel level, BlockPos pos) {
+        return ProtectionSavedData.get(level).getOwnerAt(level, pos);
+    }
 
     // Prevent non-members from breaking a settlement's beacon.
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
@@ -33,19 +38,43 @@ public class BeaconProtectionEvents {
         Player player = event.getPlayer();
         BlockPos pos = event.getPos();
 
+        // Sentinel Stone claims take priority over beacon settlements.
+        UUID sentinelOwner = getSentinelOwner(level, pos);
+
+        if (sentinelOwner != null) {
+            // The Sentinel Stone owner is allowed to handle this block.
+            // Other players will be rejected by Sentinel Stone protection.
+            if (!sentinelOwner.equals(player.getUUID())) {
+                return;
+            }
+
+            // If this is a bound beacon, remove it from its settlement.
+            if (event.getState().is(Blocks.BEACON)) {
+                GlobalPos globalPos = GlobalPos.of(level.dimension(), pos);
+
+                if (ProtectionSavedData.get(level).getSettlementAtBeacon(globalPos) != null) {
+                    ProtectionSavedData.get(level).removeBeacon(globalPos);
+
+                    player.sendSystemMessage(Component.literal(
+                        "Beacon removed from settlement."
+                    ));
+                }
+            }
+
+            return;
+        }
+
         BeaconSettlement settlement =
             BeaconProtectionManager.getSettlementAtBeacon(level, pos);
 
         if (settlement == null) return;
 
-        // Only settlement members can break bound beacons.
         if (!settlement.isMember(player.getUUID())) {
             event.setCanceled(true);
             deny(player);
             return;
         }
 
-        // Remove the beacon from its settlement.
         if (event.getState().is(Blocks.BEACON)) {
             GlobalPos globalPos = GlobalPos.of(level.dimension(), pos);
 
@@ -63,6 +92,8 @@ public class BeaconProtectionEvents {
         if (!(event.getEntity() instanceof Player player)) return;
 
         BlockPos pos = event.getPos();
+        // Sentinel Stone claims take priority over beacon protection.
+        if (getSentinelOwner(level, pos) != null) return;
 
         BeaconSettlement settlement =
             BeaconProtectionManager.getSettlementAtLocation(level, pos);
@@ -113,6 +144,8 @@ public class BeaconProtectionEvents {
         if (settlement == null || settlement.isMember(player.getUUID())) return;
 
         BlockState state = level.getBlockState(pos);
+        // Sentinel Stone claims take priority over beacon protection.
+        if (getSentinelOwner(level, pos) != null) return;
 
         // Allow workstations and beacon interaction.
         if (isAllowedWorkstation(state) || state.is(Blocks.BEACON)) {
@@ -139,7 +172,10 @@ public class BeaconProtectionEvents {
             || state.is(Blocks.COMPARATOR)
             || state.is(Blocks.RAIL)
             || state.is(Blocks.POWERED_RAIL)
-            || state.is(Blocks.RESPAWN_ANCHOR);
+            || state.is(Blocks.RESPAWN_ANCHOR)
+            || state.is(SentinelStones.SENTINEL_STONE)
+            || state.is(Blocks.WATER)
+            || state.is(Blocks.LAVA);
     }
 
     private static boolean isAllowedWorkstation(BlockState state) {
