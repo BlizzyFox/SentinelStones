@@ -1,5 +1,6 @@
 package com.blizzy.sentinelstones.protection;
 
+import com.blizzy.sentinelstones.Config;
 import com.blizzy.sentinelstones.protection.ProtectionManager;
 
 import java.util.UUID;
@@ -109,7 +110,7 @@ public class ProtectionEvents {
         event.getAffectedBlocks().removeIf(pos -> {
                 UUID sentinelOwner = getSentinelOwner(level, pos);
                 
-                if(sentinelOwner != null) return true;
+                if(sentinelOwner != null && !Config.EXPLOSION_VULN.getAsBoolean()) return true;
                 return false;
         });
 
