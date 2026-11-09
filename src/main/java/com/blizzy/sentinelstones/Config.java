@@ -16,7 +16,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 // Demonstrates how to use Neo's config APIs
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-
+	/* 
     public static final ModConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER
             .comment("Whether to log the dirt block on common setup")
             .define("logDirtBlock", true);
@@ -33,6 +33,19 @@ public class Config {
     public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
             .comment("A list of items to log on common setup.")
             .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), () -> "", Config::validateItemName);
+	*/
+    public static final ModConfigSpec.BooleanValue EXPLOSION_VULN = BUILDER
+            .comment("Should Sentinel Stones be vulnerable to explosives?")
+            .define("explosivesDamageSentinelStones", false);
+
+	public static final ModConfigSpec.IntValue SENTINEL_RANGE = BUILDER
+			.comment("Range that a Sentinel Stone protects.")
+			.defineInRange("sentinelRange", 1, 1, Integer.MAX_VALUE);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> BLOCK_STRINGS = BUILDER
+			.comment("Blacklist these blocks from being placed in the range of a bound Beacon's magic:")
+			.defineListAllowEmpty("blocks", List.of(), () -> "", Config::validateItemName);
+
 
     static final ModConfigSpec SPEC = BUILDER.build();
 

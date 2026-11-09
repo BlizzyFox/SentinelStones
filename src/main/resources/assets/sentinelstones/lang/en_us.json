@@ -1,15 +1,12 @@
 {
-  "itemGroup.sentinelstones": "Example Mod Tab",
-  "block.sentinelstones.example_block": "Example Block",
-  "item.sentinelstones.example_item": "Example Item",
+  "itemGroup.sentinelstones": "Sentinel Stones",
 
   "sentinelstones.configuration.title": "SentinelStones Configs",
   "sentinelstones.configuration.section.sentinelstones.common.toml": "SentinelStones Configs",
   "sentinelstones.configuration.section.sentinelstones.common.toml.title": "SentinelStones Configs",
-  "sentinelstones.configuration.items": "Item List",
-  "sentinelstones.configuration.logDirtBlock": "Log Dirt Block",
-  "sentinelstones.configuration.magicNumberIntroduction": "Magic Number Text",
-  "sentinelstones.configuration.magicNumber": "Magic Number",
+  "sentinelstones.configuration.blocks": "Block Blacklist",
+  "sentinelstones.configuration.explosivesDamageSentinelStones": "Explosives Damage Sentinel Stones",
+  "sentinelstones.configuration.sentinelRange": "Sentinel Stone Range",
 
   "block.sentinelstones.sentinel_stone": "Sentinel Stone"
 

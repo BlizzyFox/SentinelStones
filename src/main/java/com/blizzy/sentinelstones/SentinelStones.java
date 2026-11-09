@@ -68,11 +68,11 @@ public class SentinelStones {
             );
 
     // Creates a new food item with the id "sentinelstones:example_id", nutrition 1 and saturation 2
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
+    /*public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
             .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
-
+    */
     // Creates a creative tab with the id "sentinelstones:example_tab" for the example item, that is placed after the combat tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("sentinel_stones", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.sentinelstones")) //The language key for the title of your CreativeModeTab
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> SENTINEL_STONE_ITEM.get().getDefaultInstance())
@@ -100,7 +100,7 @@ public class SentinelStones {
         NeoForge.EVENT_BUS.register(this);
 
         // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        //modEventBus.addListener(this::addCreative);
         // Add Commands.
         //modEventBus.addListener(SentinelStonesCommands::registerCommands);
 
@@ -117,15 +117,16 @@ public class SentinelStones {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        //LOGGER.info("HELLO FROM COMMON SETUP");
 
-        if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
+        /*if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-        }
+        }*/
 
-        LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
+        //LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
-        Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        //Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        
         if (ModList.get().isLoaded("create")) {
             event.enqueueWork(() -> {
                 try {
@@ -146,12 +147,12 @@ public class SentinelStones {
         }
     }
 
-    // Add the example block item to the building blocks tab
+    /*  Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(EXAMPLE_BLOCK_ITEM);
         }
-    }
+    }*/
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
