@@ -51,15 +51,16 @@ public class SentinelStones {
 
     /* */
     // Creates a new Block with the id "sentinelstones:example_block", combining the namespace and path
-    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+    //public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
     // Creates a new BlockItem with the id "sentinelstones:example_block", combining the namespace and path
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+    //public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+    
     // Sentinel Stone
     public static final DeferredBlock<Block> SENTINEL_STONE =
             BLOCKS.registerBlock(
                 "sentinel_stone",
                 ProtectionStoneBlock::new,
-                BlockBehaviour.Properties.of().explosionResistance(0.0f).destroyTime(1.0f)
+                BlockBehaviour.Properties.of().destroyTime(1.0f).explosionResistance(Config.EXPLOSION_VULN.getAsBoolean() ? 0.0f : 9999.0f)
             );
     
     public static final DeferredItem<BlockItem> SENTINEL_STONE_ITEM =

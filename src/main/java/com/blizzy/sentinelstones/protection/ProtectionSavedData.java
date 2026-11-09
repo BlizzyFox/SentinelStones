@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.blizzy.sentinelstones.Config;
+
 
 
 public class ProtectionSavedData extends SavedData {
@@ -402,6 +404,7 @@ public class ProtectionSavedData extends SavedData {
     */
     public UUID getOwnerAt(ServerLevel level, BlockPos targetPos) {
         String dimension = level.dimension().location().toString();
+        int range = Config.SENTINEL_RANGE.getAsInt();
 
         for (Map.Entry<StoneKey, UUID> entry : stones.entrySet()) {
             StoneKey key = entry.getKey();
@@ -413,9 +416,9 @@ public class ProtectionSavedData extends SavedData {
             BlockPos stonePos = key.pos();
 
             boolean inside =
-                    Math.abs(targetPos.getX() - stonePos.getX()) <= 1 &&
-                    Math.abs(targetPos.getY() - stonePos.getY()) <= 1 &&
-                    Math.abs(targetPos.getZ() - stonePos.getZ()) <= 1;
+                    Math.abs(targetPos.getX() - stonePos.getX()) <= range &&
+                    Math.abs(targetPos.getY() - stonePos.getY()) <= range &&
+                    Math.abs(targetPos.getZ() - stonePos.getZ()) <= range;
 
             if (inside) {
                 return entry.getValue();
