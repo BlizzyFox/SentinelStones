@@ -6,11 +6,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class BeaconEffectHandler {
 
+    @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
 
         if (!(event.getEntity() instanceof ServerPlayer player)) {

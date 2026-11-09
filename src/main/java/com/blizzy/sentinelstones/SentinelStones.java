@@ -109,11 +109,11 @@ public class SentinelStones {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         NeoForge.EVENT_BUS.addListener(SentinelStonesCommands::registerCommands);
-        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockBreak);
-        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockPlace);
-        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockInteract);
-        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onExplosionDetonate);
-        NeoForge.EVENT_BUS.addListener(BeaconEffectHandler::onPlayerTick);
+        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockBreak);
+        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockPlace);
+        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockInteract);
+        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onExplosionDetonate);
+        //NeoForge.EVENT_BUS.addListener(BeaconEffectHandler::onPlayerTick);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

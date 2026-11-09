@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public class BeaconProtectionEvents {
     }
 
     // Prevent non-members from breaking a settlement's beacon.
+    @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
 
@@ -45,6 +47,7 @@ public class BeaconProtectionEvents {
             // The Sentinel Stone owner is allowed to handle this block.
             // Other players will be rejected by Sentinel Stone protection.
             if (!sentinelOwner.equals(player.getUUID())) {
+                deny(player);
                 return;
             }
 
@@ -87,6 +90,7 @@ public class BeaconProtectionEvents {
     }
 
     // Prevent non-members from placing griefing blocks.
+    @SubscribeEvent
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         if (!(event.getEntity() instanceof Player player)) return;
@@ -108,6 +112,7 @@ public class BeaconProtectionEvents {
         }
     }
 
+    @SubscribeEvent
     public static void onExplosionDetonate(ExplosionEvent.Detonate event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
 
@@ -122,7 +127,7 @@ public class BeaconProtectionEvents {
 
             GlobalPos globalPos = GlobalPos.of(level.dimension(), pos);
 
-            // Only remove beacons that belong to a settlement.
+            // Only remove beacons that dontbelong to a settlement.
             if (data.getSettlementAtBeacon(globalPos) == null) {
                 continue;
             }
@@ -132,6 +137,7 @@ public class BeaconProtectionEvents {
     }
 
     // Prevent non-members from accessing storage blocks.
+    @SubscribeEvent
     public static void onBlockInteract(PlayerInteractEvent.RightClickBlock event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
