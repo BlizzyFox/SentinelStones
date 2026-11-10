@@ -1,6 +1,7 @@
 
 package com.blizzy.sentinelstones.protection;
 
+import com.blizzy.sentinelstones.Config;
 import com.blizzy.sentinelstones.SentinelStones;
 import com.blizzy.sentinelstones.protection.BeaconProtectionManager;
 
@@ -167,37 +168,11 @@ public class BeaconProtectionEvents {
     }
 
     private static boolean isBlacklistedBlock(BlockState state) {
-        return state.is(Blocks.TNT)
-            || state.is(Blocks.PISTON)
-            || state.is(Blocks.STICKY_PISTON)
-            || state.is(Blocks.DISPENSER)
-            || state.is(Blocks.DROPPER)
-            || state.is(Blocks.REDSTONE_WIRE)
-            || state.is(Blocks.REDSTONE_TORCH)
-            || state.is(Blocks.REPEATER)
-            || state.is(Blocks.COMPARATOR)
-            || state.is(Blocks.RAIL)
-            || state.is(Blocks.POWERED_RAIL)
-            || state.is(Blocks.RESPAWN_ANCHOR)
-            || state.is(SentinelStones.SENTINEL_STONE)
-            || state.is(Blocks.WATER)
-            || state.is(Blocks.LAVA);
+        return Config.blacklistedBlocksCache.contains(state.getBlock());
     }
 
     private static boolean isAllowedWorkstation(BlockState state) {
-        return state.is(Blocks.CRAFTING_TABLE)
-            || state.is(Blocks.FURNACE)
-            || state.is(Blocks.BLAST_FURNACE)
-            || state.is(Blocks.SMOKER)
-            || state.is(Blocks.SMITHING_TABLE)
-            || state.is(Blocks.ANVIL)
-            || state.is(Blocks.CHIPPED_ANVIL)
-            || state.is(Blocks.DAMAGED_ANVIL)
-            || state.is(Blocks.ENCHANTING_TABLE)
-            || state.is(Blocks.STONECUTTER)
-            || state.is(Blocks.LOOM)
-            || state.is(Blocks.CARTOGRAPHY_TABLE)
-            || state.is(Blocks.GRINDSTONE)
-            || state.is(Blocks.BREWING_STAND);
+        return Config.allowedWorkstationsCache.contains(state.getBlock());
     }
+
 }

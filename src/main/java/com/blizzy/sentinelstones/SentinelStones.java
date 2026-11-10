@@ -60,7 +60,7 @@ public class SentinelStones {
             BLOCKS.registerBlock(
                 "sentinel_stone",
                 ProtectionStoneBlock::new,
-                BlockBehaviour.Properties.of().destroyTime(1.0f).explosionResistance(Config.EXPLOSION_VULN.getAsBoolean() ? 0.0f : 9999.0f)
+                BlockBehaviour.Properties.of().destroyTime(1.0f).explosionResistance(1.0f)
             );
     
     public static final DeferredItem<BlockItem> SENTINEL_STONE_ITEM =
@@ -85,6 +85,8 @@ public class SentinelStones {
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public SentinelStones(IEventBus modEventBus, ModContainer modContainer) {
+        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -105,9 +107,6 @@ public class SentinelStones {
         // Add Commands.
         //modEventBus.addListener(SentinelStonesCommands::registerCommands);
 
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-
         NeoForge.EVENT_BUS.addListener(SentinelStonesCommands::registerCommands);
         //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockBreak);
         //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockPlace);
@@ -127,6 +126,9 @@ public class SentinelStones {
         //LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
         //Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        
+        // Precompute the config for fast lookup instead of converting to string every time.
+        Config.bakeConfig();
         
         if (ModList.get().isLoaded("create")) {
             event.enqueueWork(() -> {

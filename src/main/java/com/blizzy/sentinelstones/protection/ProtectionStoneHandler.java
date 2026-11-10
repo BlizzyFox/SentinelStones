@@ -48,12 +48,12 @@ public class ProtectionStoneHandler {
                 );
 
                 player.displayClientMessage(
-                        Component.literal("Sentinel Stone unbound."),
+                        Component.literal("You release the stone."),
                         true
                 );
             } else {
                 player.displayClientMessage(
-                        Component.literal("This Sentinel Stone belongs to another player!"),
+                        Component.literal("This stone does not obey you."),
                         true
                 );
             }
@@ -69,7 +69,7 @@ public class ProtectionStoneHandler {
 
             player.displayClientMessage(
                     Component.literal(
-                            "This Sentinel Stone overlaps another player's protection!"
+                            "Another being's influence prevents you from commanding this stone."
                     ),
                     true
             );
@@ -106,7 +106,7 @@ public class ProtectionStoneHandler {
 
         player.displayClientMessage(
                 Component.literal(
-                        "Sentinel Stone successfully bound!"
+                        "The stone emits a reassuring energy in response to your touch."
                 ),
                 true
         );
