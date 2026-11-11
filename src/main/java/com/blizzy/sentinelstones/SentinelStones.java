@@ -108,11 +108,11 @@ public class SentinelStones {
         //modEventBus.addListener(SentinelStonesCommands::registerCommands);
 
         NeoForge.EVENT_BUS.addListener(SentinelStonesCommands::registerCommands);
-        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockBreak);
-        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockPlace);
-        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockInteract);
-        //NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onExplosionDetonate);
-        //NeoForge.EVENT_BUS.addListener(BeaconEffectHandler::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockBreak);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockPlace);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onBlockInteract);
+        NeoForge.EVENT_BUS.addListener(BeaconProtectionEvents::onExplosionDetonate);
+        NeoForge.EVENT_BUS.addListener(BeaconEffectHandler::onPlayerTick);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -126,7 +126,7 @@ public class SentinelStones {
         //LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
         //Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
-        
+
         // Precompute the config for fast lookup instead of converting to string every time.
         Config.bakeConfig();
         
